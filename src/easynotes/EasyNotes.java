@@ -14,7 +14,8 @@ public class EasyNotes {
         int cantN = cantNotas();
          
         double [][]ramos = agregarRamos(cantR,cantN+1);
-        menuPrincipal(ramos,cantN);
+        double [][]pond = agregarPond(cantR,cantN);
+        menuPrincipal(ramos,cantN,pond);
         
         }
        
@@ -25,24 +26,26 @@ public class EasyNotes {
     }   
     
     
-    public static void menuPrincipal(double [][]asign, int cantNotas){
+    public static void menuPrincipal(double [][]asign, int cantNotas, double[][]pond){
          int opc;
         do{
         System.out.println("----------menu------------");    
         System.out.println("1. Agregar notas");
-        System.out.println("2. Ver notas agregadas");
-        System.out.println("3. Calcular promedio");
-        System.out.println("4. salir");
+        System.out.println("2. Agregar ponderaciones");
+        System.out.println("3. Ver notas agregadas");
+        System.out.println("4. Calcular promedio");
+        System.out.println("5. salir");
         
          opc = leer();
         switch(opc){
             case 1 :agregarNotas(asign); break;
-            case 2: mostrarNotas(asign);break;
-            case 3: mostrarPromedio(promedio(asign,cantNotas));break;
-            case 4: break;
+            case 2: agregarPonderaciones(pond);break;
+            case 3: mostrarNotas(asign, pond);break; 
+            case 4: mostrarPromedio(promedio(asign,cantNotas, pond));break;
+            case 5: break;
             default: break;
         }
-        }while(opc !=4);
+        }while(opc !=5);
     }
     
     public static int cantNotas(){
@@ -63,11 +66,15 @@ public class EasyNotes {
     }
     public static double[][] agregarRamos(int ramos,int asign){
        
-        
-        
         double asignaturas [][] = new double[ramos][asign];
       
             return asignaturas;
+    }
+     public static double[][] agregarPond(int ramos,int asign){
+          
+        double ponderaciones [][] = new double[ramos][asign];
+      
+            return ponderaciones;       
         
     }
     public static void agregarNotas(double [][]asign){
@@ -88,32 +95,55 @@ public class EasyNotes {
                 
                 }while(asign[a-1][j]<1||asign[a-1][j]>7);
         }    
+    }
+     public static void agregarPonderaciones(double [][]pond){
+        Scanner leer = new Scanner(System.in);
+        int a;
+        do{  
+        System.out.println("asignatura a la que quiere agregar ponderaciones");
+        
+        a = leer();
+        }while(a<=0 || a>pond.length);
+        
+             
+            for (int j = 0; j < pond[0].length; j++) {
+                
+                
+                System.out.println("agregar ponderacion nota "+(j+1)+" en %");
+                pond[a-1][j]=leer.nextInt();   
+                
+                
+        }    
          
-    
 }  
-     public static void mostrarNotas(double [][]asign){
+     public static void mostrarNotas(double [][]asign,double [][]pond){
          
          for (int i = 0; i < asign.length; i++) {
-             System.out.print("asignatura "+(i+1)+" : ");
+             System.out.print("asignatura    "+(i+1)+" : ");
              for (int j = 0; j < asign[i].length; j++) {
                  System.out.print(asign[i][j]+"\t");
+             }
+             System.out.println("");
+             System.out.print("ponderaciones "+(i+1)+" : ");
+             for(int z=0; z<pond[i].length;z++){
+             System.out.print(pond[i][z]+"% \t"); 
              }
              System.out.println("");
          }
          System.out.println("nota: Promedio se guarda en ultima casilla");
     }
      
-      public static double promedio(double asign[][], int cantNotas){
+      public static double promedio(double asign[][], int cantNotas, double[][] pond){
         double cont =0;
         int ramo;
           System.out.println("asignatura a promediar:");
           ramo= leer();
         
               for (int j = 0; j <asign[0].length-1; j++) {
-            cont= cont + asign[ramo-1][j];
+            cont= cont + (asign[ramo-1][j]*(pond[ramo-1][j]/100));
         }
               
-        double promedio= cont/cantNotas;
+        double promedio= cont;
         
        asign[ramo-1][cantNotas]= promedio;
         
@@ -123,9 +153,8 @@ public class EasyNotes {
     }
       
       public static void estadoRamo(double asign[][], int cantNotas, int ramo){
-           
-          System.out.println(ramo);
-          if(asign[ramo-1][cantNotas] >=4){
+         
+          if(asign[ramo-1][cantNotas] >=3.95){
               
               System.out.println("usted esta aprobado");
           }else{
