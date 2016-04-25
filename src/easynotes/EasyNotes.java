@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class EasyNotes {
 
     //Probaaando
-    
+    // hola
     public static void main(String[] args) {
         int cantR = cantRamos(); 
         int cantN = cantNotas();
