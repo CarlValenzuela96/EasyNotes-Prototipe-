@@ -11,11 +11,13 @@ public class EasyNotes {
     
     public static void main(String[] args) {
         int cantR = cantRamos(); 
-        int cantN = cantNotas();
-         
-        double [][]ramos = agregarRamos(cantR,cantN+1);
-        double [][]pond = agregarPond(cantR,cantN);
-        menuPrincipal(ramos,cantN,pond);
+        int cantNT = cantNotasTeorico();
+        int cantNP = cantNotasPractico(); 
+        double [][]teorico = agregarRamos(cantR,cantNT+1);
+        double [][]practico = agregarRamos(cantR,cantNP+1);
+        double [][]pondNT = agregarPond(cantR,cantNT);
+        double [][]pondNP = agregarPond(cantR,cantNP);
+        menuPrincipal(teorico,practico,cantNT,cantNP,pondNT,pondNP);
         
         }
        
@@ -26,7 +28,7 @@ public class EasyNotes {
     }   
     
     
-    public static void menuPrincipal(double [][]asign, int cantNotas, double[][]pond){
+    public static void menuPrincipal(double [][]teorico,double[][]practico,int cantNT , int cantNP, double[][]pondNT, double[][] pondNP){
          int opc;
         do{
         System.out.println("----------menu------------");    
@@ -38,20 +40,30 @@ public class EasyNotes {
         
          opc = leer();
         switch(opc){
-            case 1 :agregarNotas(asign); break;
-            case 2: agregarPonderaciones(pond);break;
-            case 3: mostrarNotas(asign, pond);break; 
-            case 4: mostrarPromedio(promedio(asign,cantNotas, pond));break;
-            case 5: break;
+            case 1 :agregarNotas(teorico,practico); break;
+            case 2: agregarPonderaciones(pondNT,pondNP);break;
+            case 3: mostrarNotas(teorico,practico,pondNT,pondNP);break; 
+            case 4://mostrarPromedio(promedio(asign,cantNotas, pond));break;
+                   
+            case 5: main(null);break;
+            case 6: break;
             default: break;
         }
-        }while(opc !=5);
+        }while(opc !=6);
     }
     
-    public static int cantNotas(){
+    public static int cantNotasTeorico(){
         int asign;
         do{
-        System.out.println("ingrese cantidad de notas de las asignaturas");
+        System.out.println("ingrese cantidad de notas teoricas de las asignaturas");
+         asign = leer();
+        }while(asign <=0);
+        return asign;
+    }
+    public static int cantNotasPractico(){
+        int asign;
+        do{
+        System.out.println("ingrese cantidad de notas practicas de las asignaturas");
          asign = leer();
         }while(asign <=0);
         return asign;
@@ -77,57 +89,90 @@ public class EasyNotes {
             return ponderaciones;       
         
     }
-    public static void agregarNotas(double [][]asign){
+    public static void agregarNotas(double [][]teorico, double[][]practico){
         Scanner leer = new Scanner(System.in);
         int a;
         do{  
         System.out.println("asignatura a la que quiere agregar notas");
         
         a = leer();
-        }while(a<=0 || a>asign.length);
+        }while(a<=0 || a>teorico.length);
         
              
-            for (int j = 0; j < asign[0].length-1; j++) {
+            for (int j = 0; j < teorico[0].length-1; j++) {
                 do{
                 
-                System.out.println("agregar nota "+(j+1));
-                asign[a-1][j]=leer.nextDouble();   
+                System.out.println("agregar nota terica "+(j+1));
+                teorico[a-1][j]=leer.nextDouble();   
                 
-                }while(asign[a-1][j]<1||asign[a-1][j]>7);
+                }while(teorico[a-1][j]<1||teorico[a-1][j]>7);
         }    
+            for (int j = 0; j < teorico[0].length-1; j++) {
+                do{
+                
+                System.out.println("agregar nota practica "+(j+1));
+                practico[a-1][j]=leer.nextDouble();   
+                
+                }while(teorico[a-1][j]<1||practico[a-1][j]>7);
+        }    
+            
     }
-     public static void agregarPonderaciones(double [][]pond){
+     public static void agregarPonderaciones(double [][]pondNT, double [][]pondNP){
         Scanner leer = new Scanner(System.in);
         int a;
         do{  
         System.out.println("asignatura a la que quiere agregar ponderaciones");
         
         a = leer();
-        }while(a<=0 || a>pond.length);
+        }while(a<=0 || a>pondNT.length);
         
              
-            for (int j = 0; j < pond[0].length; j++) {
+            for (int j = 0; j < pondNT[0].length; j++) {
                 
                 
-                System.out.println("agregar ponderacion nota "+(j+1)+" en %");
-                pond[a-1][j]=leer.nextInt();   
+                System.out.println("agregar ponderacion teorica nota "+(j+1)+" en %");
+                pondNT[a-1][j]=leer.nextInt();   
+                
+                
+        }   
+              for (int j = 0; j < pondNP[0].length; j++) {
+                
+                
+                System.out.println("agregar ponderacion practica nota "+(j+1)+" en %");
+                pondNP[a-1][j]=leer.nextInt();   
                 
                 
         }    
          
 }  
-     public static void mostrarNotas(double [][]asign,double [][]pond){
+     public static void mostrarNotas(double [][]teorico,double [][]practico,double[][]pondNT,double[][]pondNP){
          
-         for (int i = 0; i < asign.length; i++) {
+         for (int i = 0; i < teorico.length; i++) {
              System.out.print("asignatura    "+(i+1)+" : ");
-             for (int j = 0; j < asign[i].length; j++) {
-                 System.out.print(asign[i][j]+"\t");
+             System.out.print("notas Teoricas:  ");
+             for (int a = 0; a < teorico[i].length; a++) {
+                 System.out.print(teorico[i][a]+"\t");
+             }
+             System.out.println("");
+             System.out.print("asignatura    "+(i+1)+" : ");
+             System.out.print("notas Practicas: ");
+              for (int b = 0; b < practico[i].length; b++) {
+                 System.out.print(practico[i][b]+"\t");
+             }
+              System.out.println("");
+             
+             System.out.print("ponderaciones "+(i+1)+" : ");
+             System.out.print("pond Teoricas:   ");
+             for(int c=0; c<pondNT[i].length;c++){
+             System.out.print(pondNT[i][c]+"% "); 
              }
              System.out.println("");
              System.out.print("ponderaciones "+(i+1)+" : ");
-             for(int z=0; z<pond[i].length;z++){
-             System.out.print(pond[i][z]+"% \t"); 
+             System.out.print("pond Practicas:  ");
+             for(int d=0; d<pondNP[i].length;d++){
+             System.out.print(pondNP[i][d]+"% "); 
              }
+             System.out.println("");
              System.out.println("");
          }
          System.out.println("nota: Promedio se guarda en ultima casilla");
@@ -172,7 +217,19 @@ public class EasyNotes {
     }
     
         
-    
+    public static double [][]resetearSemestre(double asign[][]){
+        int i,j;
+       
+        for (i = 0; i < asign.length; i++) {
+            for (j = 0; j < asign.length; j++) {
+                asign [i][j]=0;
+                
+            }
+        }
+        
+        
+        return asign;
+    }
    
        
    
