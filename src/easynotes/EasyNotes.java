@@ -32,6 +32,7 @@ public class EasyNotes {
     public static void menuPrincipal(double [][]teorico,double[][]practico,int cantNT , int cantNP, double[][]pondNT, double[][] pondNP){
          int opc;
         do{
+            System.out.println();
         System.out.println("----------menu------------");    
         System.out.println("1. Agregar notas");
         System.out.println("2. Agregar ponderaciones");
