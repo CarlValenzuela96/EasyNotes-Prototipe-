@@ -18,41 +18,66 @@ public class EasyNotes {
         double [][]practico = agregarRamos(cantR,cantNP+1);
         double [][]pondNT = agregarPond(cantR,cantNT);
         double [][]pondNP = agregarPond(cantR,cantNP);
+        try{
         menuPrincipal(teorico,practico,cantNT,cantNP,pondNT,pondNP);
-        
+        leer();
+        }catch(Exception e){
+            System.out.println("igrese solo numeros");
+            menuPrincipal(teorico,practico,cantNT,cantNP,pondNT,pondNP);
+        }
         }
        
-    public static int leer(){
-        Scanner leer = new Scanner(System.in);
-        int num = leer.nextInt();
-        return num;
-    }   
+       
     
     
     public static void menuPrincipal(double [][]teorico,double[][]practico,int cantNT , int cantNP, double[][]pondNT, double[][] pondNP){
-         int opc;
+        int opc=0;
+        
         do{
         System.out.println();
             
-        System.out.println("----------menu------------");    
+        System.out.println("----------Menu------------");    
         System.out.println("1. Agregar notas");
         System.out.println("2. Agregar ponderaciones");
         System.out.println("3. Ver notas agregadas");
         System.out.println("4. Calcular promedio");
         System.out.println("5. salir");
         System.out.println("");
-         opc = leer();
+        do{
+        System.out.println("ingrese algunad de la opciones");
+           
+        
+        opc = leer();
+        if(opc>5 || opc<1){
+            System.out.println("ingrese alguno de los numeros indicados");
+        }
+        
+        }while(opc>5 || opc<1);
+        
         switch(opc){
             case 1 :agregarNotas(teorico,practico); break;
             case 2: agregarPonderaciones(pondNT,pondNP);break;
             case 3: mostrarNotas(teorico,practico,pondNT,pondNP);break; 
             case 4:{
+                
+                    int ramo=0;
+                    int aprob=0;
                     System.out.println("asignatura a promediar :");
-                    int ramo = leer();
+                    
+                    ramo = leer();
+                    
+                    do{
                     System.out.println("como se aprueba:");
                     System.out.println("1. T-P por separado");
                     System.out.println("2. T-P juntos");
-                    int aprob = leer();
+                    
+                    aprob = leer();
+                    if(leer()>2 || leer()<1){
+                        System.out.println("ingrese una de las opciones");
+                    }
+                    
+                    }while(leer()>2 || leer()<1);
+                   
                     
                     double a = promedioPractico(ramo,practico,pondNP,cantNP);
                     double b = promedioTeorico(ramo,teorico,pondNT,cantNT);
@@ -68,11 +93,18 @@ public class EasyNotes {
                         }
                     }
                     if (aprob == 2){
-                        System.out.println("ingrese ponderacion parte teorica en %");
-                        double pondT = leer();
-                        System.out.println("ingrese ponderacion parte Practica en %");
-                        double pondP = leer();
+                        double pondT=0,pondP=0;
+                        do{
                         
+                        System.out.println("ingrese ponderacion parte teorica en %");
+                        pondT = leer();
+                        System.out.println("ingrese ponderacion parte Practica en %");
+                        pondP = leer();
+                        if((pondT +pondP)!=100){
+                            System.out.println("asegurese que la suma de las ponderaciones sea 100%");
+                        }
+                        
+                        }while((pondT +pondP)!=100);
                         double promT = b*(pondT/100);
                         double promP = a*(pondP/100);
                         
@@ -91,30 +123,49 @@ public class EasyNotes {
             case 5: break;
             default: break;
         }
+        
+                
         }while(opc !=5);
-    }
+        
     
+        
+    
+    }
+    public static int leer(){
+        
+        Scanner leer = new Scanner(System.in);
+        int num = leer.nextInt();
+        return num;
+    }
     public static int cantNotasTeorico(){
-        int asign;
+        int asign=0;
+        
         do{
         System.out.println("ingrese cantidad de notas teoricas de las asignaturas");
+        
          asign = leer();
+        
         }while(asign <=0);
+        
         return asign;
     }
     public static int cantNotasPractico(){
-        int asign;
+        int asign=0;
         do{
         System.out.println("ingrese cantidad de notas practicas de las asignaturas");
+         
          asign = leer();
+         
         }while(asign <=0);
         return asign;
     }
     public static int cantRamos(){
-        int ramos;
+        int ramos=0;
         do{
         System.out.println("ingrese cantidad de ramos del semestre");
+        
          ramos = leer();
+         
        }while(ramos <=0);
         return ramos;
     }
@@ -133,11 +184,13 @@ public class EasyNotes {
     }
     public static void agregarNotas(double [][]teorico, double[][]practico){
         Scanner leer = new Scanner(System.in);
-        int a;
+        int a=0;
+        double cont=0,cont2=0;
         do{  
         System.out.println("asignatura a la que quiere agregar notas");
         
         a = leer();
+       
         }while(a<=0 || a>teorico.length);
         
              
@@ -145,49 +198,69 @@ public class EasyNotes {
                 do{
                 
                 System.out.println("agregar nota teorica "+(j+1));
-                teorico[a-1][j]=leer.nextDouble();   
                 
-                }while(teorico[a-1][j]<1||teorico[a-1][j]>7);
-        }    
+                teorico[a-1][j]=leer.nextDouble();  
+                cont=teorico[a-1][j];
+                
+                }while(cont<1||cont>7);
+            }    
             for (int j = 0; j < teorico[0].length-1; j++) {
                 do{
-                
                 System.out.println("agregar nota practica "+(j+1));
-                practico[a-1][j]=leer.nextDouble();   
                 
-                }while(teorico[a-1][j]<1||practico[a-1][j]>7);
+                practico[a-1][j]=leer.nextDouble();   
+                cont2=practico[a-1][j];
+                
+                }while(cont2<1||cont2>7);
         }    
             
     }
      public static void agregarPonderaciones(double [][]pondNT, double [][]pondNP){
         Scanner leer = new Scanner(System.in);
-        int a;
+        int a=0;
+        double cont1=0,cont2=0;
         do{  
         System.out.println("asignatura a la que quiere agregar ponderaciones");
         
         a = leer();
+        
             System.out.println("");
         }while(a<=0 || a>pondNT.length);
         
      
-           
+            do{
             for (int j = 0; j < pondNT[0].length; j++) {
                 
-                 
+                do{ 
+                    
                 System.out.println("agregar ponderacion teorica nota "+(j+1)+" en %");
-                pondNT[a-1][j]=leer.nextInt();   
-               
-                
-        }
+                pondNT[a-1][j]=leer.nextInt();  
+                cont1=pondNT[a-1][j];
+                if(cont1>100 || cont1<=0){
+                    System.out.println("ingrese una ponderacion que sea mayor a 0 y menor que 100");
+                }
+                    
+                }while(cont1>100 || cont1<=0);
+            }
             
-              for (int j = 0; j < pondNP[0].length; j++) {
+            for (int j = 0; j < pondNP[0].length; j++) {
                 
+                do{
+                    
                 
                 System.out.println("agregar ponderacion practica nota "+(j+1)+" en %");
                 pondNP[a-1][j]=leer.nextInt();   
+                cont2=pondNP[a-1][j];
+                if(cont1>100 || cont1<=0){
+                    System.out.println("ingrese una ponderacion que sea mayor a 0 y menor que 100");
+                }
                 
-                
-        }    
+                }while(cont1>100 || cont1<=0);
+            } 
+            if((cont1+cont2)!=100 ){
+                System.out.println("Asegúrese de que la suma de las ponderaciones sea 100%");
+            }
+            }while((cont1+cont2)!=100);
          
 }  
      public static void mostrarNotas(double [][]teorico,double [][]practico,double[][]pondNT,double[][]pondNP){
