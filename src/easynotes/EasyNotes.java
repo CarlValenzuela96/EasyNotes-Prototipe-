@@ -32,14 +32,15 @@ public class EasyNotes {
     public static void menuPrincipal(double [][]teorico,double[][]practico,int cantNT , int cantNP, double[][]pondNT, double[][] pondNP){
          int opc;
         do{
-            System.out.println();
+        System.out.println();
+            
         System.out.println("----------menu------------");    
         System.out.println("1. Agregar notas");
         System.out.println("2. Agregar ponderaciones");
         System.out.println("3. Ver notas agregadas");
         System.out.println("4. Calcular promedio");
         System.out.println("5. salir");
-        
+        System.out.println("");
          opc = leer();
         switch(opc){
             case 1 :agregarNotas(teorico,practico); break;
